@@ -1,0 +1,70 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -11,7 +11,7 @@
+ set(CMAKE_C_EXTENSIONS OFF)
+ 
+ # Options
+-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
++option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+ option(TINYALSA_USES_PLUGINS "Whether or not to build with plugin support" OFF)
+ option(TINYALSA_BUILD_EXAMPLES "Build examples" ON)
+ option(TINYALSA_BUILD_UTILS "Build utility tools" ON)
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -76,7 +76,7 @@
+ 
+ # Add C warning flags
+ include(CheckCCompilerFlag)
+-foreach(FLAG IN ITEMS -Wall -Wextra -Wpedantic -Werror -Wfatal-errors)
++foreach(FLAG IN ITEMS)
+     string(TOUPPER "HAVE${FLAG}" HAVE_VAR)
+     string(REPLACE "-" "_" HAVE_VAR "${HAVE_VAR}")
+     check_c_compiler_flag("${FLAG}" "${HAVE_VAR}")
+
+--- a/src/pcm_plugin.c
++++ b/src/pcm_plugin.c
+@@ -40,7 +40,6 @@
+ 
+ #include <sys/ioctl.h>
+ #include <linux/ioctl.h>
+-#include <sound/asound.h>
+ #include <tinyalsa/asoundlib.h>
+ #include <tinyalsa/plugin.h>
+ 
+--- a/src/pcm_hw.c
++++ b/src/pcm_hw.c
+@@ -39,7 +39,6 @@
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <linux/ioctl.h>
+-#include <sound/asound.h>
+ #include <tinyalsa/asoundlib.h>
+ 
+ #include "pcm_io.h"
+
+ 
+ 
+--- a/src/mixer_hw.c
++++ b/src/mixer_hw.c
+@@ -42,7 +42,6 @@
+ #include <sys/ioctl.h>
+ 
+ #include <linux/ioctl.h>
+-#include <sound/asound.h>
+ 
+ #include "mixer_io.h"
+ 
+--- a/src/mixer_io.h
++++ b/src/mixer_io.h
+@@ -32,7 +32,6 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <sound/asound.h>
+ 
+ struct mixer_ops;
+ 
+
+
+ 

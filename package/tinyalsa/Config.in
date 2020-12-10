@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TINYALSA
 	bool "tinyalsa"
-	depends on !BR2_STATIC_LIBS
 	help
 	  a small library to interface with ALSA in the Linux kernel
 
@@ -13,5 +12,3 @@ config BR2_PACKAGE_TINYALSA
 
 	  https://github.com/tinyalsa/tinyalsa
 
-comment "tinyalsa needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
