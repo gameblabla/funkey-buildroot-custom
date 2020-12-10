@@ -1,0 +1,36 @@
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -4,9 +4,9 @@
+ VERSION_MAJOR = 0
+ VERSION_MINOR = 1
+ 
+-LIBNAME = libxdgmime.so
+-SONAME = $(LIBNAME).$(VERSION_MAJOR)
+-LIBXDGMIME = $(SONAME).$(VERSION_MINOR)
++LIBNAME = libxdgmime.a
++SONAME = libxdgmime.a
++LIBXDGMIME = libxdgmime.a
+ 
+ CXX = $(CROSS_COMPILE)g++
+ CC  = $(CROSS_COMPILE)gcc
+@@ -14,7 +14,7 @@
+ 
+ # TODO: use Autotools to detect <sys/mman.h>
+ # instead of hardcoding that...
+-CFLAGS += -fPIC -DHAVE_MMAP
++CFLAGS += -fno-PIC -DHAVE_MMAP
+ 
+ INSTALL ?= install
+ 
+@@ -26,7 +26,10 @@
+ all: $(LIBXDGMIME)
+ 
+ $(LIBXDGMIME): $(OBJS)
+-	$(CC) -shared -Wl,-soname,$(SONAME) -o $@ $^ $(LDFLAGS)
++	$(AR) rcs $(SONAME) $^
++	
++$(OBJS) : %.o : %.c
++	$(CC) $(CFLAGS) -c -o $@ $<
+ 
+ install-lib: $(LIBXDGMIME)
+ 	$(INSTALL) -D $(LIBXDGMIME) $(DESTDIR)$(PREFIX)/lib/$(LIBXDGMIME)
