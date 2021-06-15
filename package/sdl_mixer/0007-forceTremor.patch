@@ -1,7 +1,7 @@
 --- a/configure
 +++ b/configure
-@@ -13701,7 +13701,7 @@
- if test "${enable_music_ogg_tremor+set}" = set; then
+@@ -12136,7 +12136,7 @@
+ if test "${enable_music_ogg_tremor+set}" = set; then :
    enableval=$enable_music_ogg_tremor;
  else
 -  enable_music_ogg_tremor=no
@@ -9,13 +9,13 @@
  fi
  
  # Check whether --enable-music-ogg-shared was given.
-@@ -13939,10 +13939,14 @@
+@@ -12219,10 +12219,14 @@
                  EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec -lvorbis"
              fi
          else
--            { $as_echo "$as_me:$LINENO: WARNING: *** Unable to find Ogg Vorbis Tremor library (http://www.xiph.org/)" >&5
+-            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: *** Unable to find Ogg Vorbis Tremor library (http://www.xiph.org/)" >&5
 -$as_echo "$as_me: WARNING: *** Unable to find Ogg Vorbis Tremor library (http://www.xiph.org/)" >&2;}
--            { $as_echo "$as_me:$LINENO: WARNING: Ogg Vorbis support disabled" >&5
+-            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Ogg Vorbis support disabled" >&5
 -$as_echo "$as_me: WARNING: Ogg Vorbis support disabled" >&2;}
 +            SOURCES="$SOURCES $srcdir/*_ogg.c"
 +            EXTRA_CFLAGS="$EXTRA_CFLAGS -DOGG_MUSIC -DOGG_USE_TREMOR"
@@ -23,8 +23,34 @@
 +                echo "-- dynamic libvorbisidec -> $ogg_lib"
 +                EXTRA_CFLAGS="$EXTRA_CFLAGS -DOGG_DYNAMIC=\\\"$ogg_lib\\\""
 +            else
-+                EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec"
++                EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lvorbisidec -lvorbis"
 +            fi
          fi
      else
-         if test "${ac_cv_header_vorbis_vorbisfile_h+set}" = set; then
+         ac_fn_c_check_header_mongrel "$LINENO" "vorbis/vorbisfile.h" "ac_cv_header_vorbis_vorbisfile_h" "$ac_includes_default"
+@@ -12482,7 +12482,7 @@
+   enable_music_mp3_shared=yes
+ fi
+ 
+-have_mpg123=no
++have_mpg123=yes
+ if test x$enable_music_mp3 = xyes; then
+     ac_fn_c_check_header_mongrel "$LINENO" "mpg123.h" "ac_cv_header_mpg123_h" "$ac_includes_default"
+ if test "x$ac_cv_header_mpg123_h" = xyes; then :
+@@ -12552,8 +12552,14 @@
+             EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lmpg123"
+         fi
+     else
+-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: *** Unable to find mpg123 library (https://www.mpg123.de)" >&5
+-$as_echo "$as_me: WARNING: *** Unable to find mpg123 library (https://www.mpg123.de)" >&2;}
++        SOURCES="$SOURCES $srcdir/*_mp3.c $srcdir/*_mpg.c"
++        EXTRA_CFLAGS="$EXTRA_CFLAGS -DMP3_MUSIC"
++        if test x$enable_music_mp3_shared = xyes && test x$mpg123_lib != x; then
++            echo "-- dynamic libmpg123 -> $mpg123_lib"
++            EXTRA_CFLAGS="$EXTRA_CFLAGS -DMPG123_DYNAMIC=\\\"$mpg123_lib\\\""
++        else
++            EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lmpg123"
++        fi
+     fi
+ fi
+ 
