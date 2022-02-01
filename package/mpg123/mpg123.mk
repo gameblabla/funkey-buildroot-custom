@@ -57,21 +57,6 @@ MPG123_DEPENDENCIES += portaudio
 MPG123_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs portaudio-2.0`"
 endif
 
-ifeq ($(BR2_PACKAGE_SDL),y)
-MPG123_AUDIO += sdl
-MPG123_CONF_OPTS += --with-default-audio=sdl
-MPG123_DEPENDENCIES += sdl
-endif
-
-ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
-MPG123_AUDIO += alsa
-MPG123_CONF_OPTS += --with-default-audio=alsa
-MPG123_DEPENDENCIES += alsa-lib
-# configure script does NOT use pkg-config to figure out how to link
-# with alsa, breaking static linking as alsa uses pthreads
-MPG123_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs alsa`"
-endif
-
 MPG123_CONF_OPTS += --with-audio=$(subst $(space),$(comma),$(MPG123_AUDIO))
 
 # output modules are loaded with dlopen()
